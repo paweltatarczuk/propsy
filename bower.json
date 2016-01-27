@@ -1,0 +1,10 @@
+{
+  "name": "propsy",
+  "version": "0.0.0",
+  "dependencies": {
+    "modernizr": "~2.6.2",
+    "underscore": "~1.8.0",
+    "handlebars": "~4.0.4"
+  },
+  "devDependencies": {}
+}
