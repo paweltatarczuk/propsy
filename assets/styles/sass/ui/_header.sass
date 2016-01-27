@@ -2,10 +2,9 @@ header#page-header
     z-index: 900
     position: fixed
     top: 15px
-    left: 50%
-    width: 600px
+    left: 10px
+    right: 10px
     padding: 0 20px
-    margin: 0 0 0 -300px
     text-align: center
     background: white
     -webkit-border-radius: 8px
@@ -32,3 +31,35 @@ header#page-header
         font-weight: bold
         text-align: center
         font-size: 1.4rem
+
+    @media (min-width: 640px)
+        left: 50%
+        width: 600px
+        margin: 0 0 0 -300px
+
+#socials
+    z-index: 950
+    position: absolute
+    top: 25px
+    right: 30px
+
+    a
+        display: inline-block
+        width: 31px
+        height: 31px
+        margin-bottom: 4px
+        overflow: hidden
+        text-indent: -999px
+
+    a.facebook
+        background: url(../images/facebook.png) no-repeat
+
+    a.instagram
+        background: url(../images/instagram.png) no-repeat
+
+    @media (min-width: 640px)
+        top: 15px
+        right: 10px
+
+        a
+            display: block
