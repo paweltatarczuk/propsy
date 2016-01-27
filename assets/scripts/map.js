@@ -142,7 +142,10 @@
                 stylers: [
                     { visibility: 'off' }
                 ]
-            }])
+            }]),
+            disableDefaultUI: true,
+            zoomControl: true,
+            scaleControl: true
         });
     };
 
