@@ -113,11 +113,7 @@ module.exports = function (grunt) {
             site: {
                 path: 'http://localhost:3000',
                 app: 'chromium-browser'
-            },
-            editor: {
-                path: './',
-                app: 'subl'
-            },
+            }
         },
 
         // Rev Config
@@ -265,7 +261,6 @@ module.exports = function (grunt) {
         'env:dev',
         'express:dev',
         'open:site',
-        'open:editor',
         'watch'
     ]);
 
