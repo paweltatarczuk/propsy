@@ -53,7 +53,10 @@ var router = express.Router();
 
 // Index Page
 router.get('/', function(request, response, next) {
-    response.render('index', { googleApiKey: process.env.GOOGLE_API_CLIENT_KEY });
+    response.render('index', {
+        googleApiKey: process.env.GOOGLE_API_CLIENT_KEY,
+        googleAnalyticsKey: process.env.GOOGLE_ANALYTICS_KEY || 'UA-XXXXX-X'
+    });
 });
 
 app.use(router);
