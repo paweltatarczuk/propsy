@@ -272,6 +272,13 @@ module.exports = function (grunt) {
         'watch'
     ]);
 
+    // Server
+    grunt.registerTask('server', 'Start only the server.', [
+        'env:dev',
+        'express:dev',
+        'watch:express'
+    ]);
+
 
     // Build
     grunt.registerTask('build', 'Build production ready assets and views.', [
