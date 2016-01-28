@@ -6,7 +6,7 @@ var Place = require('../models/place');
 router.delete('/:id', function(req, res) {
     Place.findOne({ '_id': req.params.id }, function(err, place) {
         if (err) {
-            return res.send(err);
+            return res.status(500).send(err);
         }
 
         place.remove();
@@ -17,7 +17,7 @@ router.delete('/:id', function(req, res) {
 router.get('/list', function(req, res) {
     Place.find({}, function(err, places) {
         if (err) {
-            return res.send(err);
+            return res.status(500).send(err);
         }
 
         res.json(places);
@@ -39,7 +39,7 @@ router.get('/near', function(req, res) {
 
     Place.find(conditions, function(err, places) {
         if (err) {
-            return res.send(err);
+            return res.status(500).send(err);
         }
 
         res.json(places);
@@ -49,7 +49,7 @@ router.get('/near', function(req, res) {
 router.get('/:id', function(req, res) {
     Place.findOne({ '_id': req.params.id }, function(err, place) {
         if (err) {
-            return res.send(err);
+            return res.status(500).send(err);
         }
 
         res.json(place);
@@ -59,7 +59,7 @@ router.get('/:id', function(req, res) {
 router.get('/', function(req, res) {
     Place.find(function(err, places) {
         if (err) {
-            return res.send(err);
+            return res.status(500).send(err);
         }
 
         res.json(places);
@@ -85,7 +85,7 @@ router.post('/', function(req, res) {
 
     place.save(function (err, place) {
         if (err) {
-            return res.send(err);
+            return res.status(500).send(err.message);
         }
 
         res.json(place);
@@ -95,7 +95,7 @@ router.post('/', function(req, res) {
 router.put('/:id', function(req, res) {
     Place.findOne({ '_id' : req.params.id }, function(err, place) {
         if (err) {
-            return res.send(err);
+            return res.status(500).send(err);
         }
 
         if (req.body.name) place.name = req.body.name;
@@ -115,7 +115,7 @@ router.put('/:id', function(req, res) {
 
         place.save(function (err, place) {
             if (err) {
-                return res.send(err);
+                return res.status(500).send(err);
             }
 
             res.json(place);

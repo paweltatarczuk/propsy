@@ -42,9 +42,11 @@ placeSchema.pre('save', function(next) {
                         self.photos.push(result.photos[key].photo_reference);
                     }
                 }
+
+                next();
             }
 
-            next(err);
+            next(new Error(err));
         });
     } else {
         next();
@@ -82,14 +84,18 @@ Place.prototype.retrievePlaceInfo = function(callback) {
 
         if (body.error_message) return callback(body.error_message);
 
-        callback(null, {
-            name: body.results[0].name,
-            address: body.results[0].formatted_address,
-            lat: body.results[0].geometry.location.lat,
-            lng: body.results[0].geometry.location.lng,
-            placeId: body.results[0].place_id,
-            photos: body.results[0].photos
-        });
+        try {
+            callback(null, {
+                name: body.results[0].name,
+                address: body.results[0].formatted_address,
+                lat: body.results[0].geometry.location.lat,
+                lng: body.results[0].geometry.location.lng,
+                placeId: body.results[0].place_id,
+                photos: body.results[0].photos
+            });
+        } catch (err) {
+            callback('Could not parse place details from Google API.');
+        }
     });
 };
 
