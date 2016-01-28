@@ -147,6 +147,8 @@
             zoomControl: true,
             scaleControl: true
         });
+
+        this.findAll();
     };
 
     Map.prototype.geocode = function(q, callback) {
@@ -173,6 +175,7 @@
             self.googleMap.fitBounds(result.geometry.bounds);
             self.setCenter(result.geometry.location);
 
+            return; // Do not perform places search
 
             $.ajax('/places/near', {
                 data: {
@@ -186,6 +189,21 @@
                     });
                 }
             });
+        });
+    };
+
+    Map.prototype.findAll = function() {
+        var self = this;
+
+        Place.purge();
+
+        $.ajax('/places/list', {
+            success: function(data) {
+                $.each(data, function(n, placeData) {
+                    var place = new Place(placeData);
+                    place.setMap(self);
+                });
+            }
         });
     };
 
