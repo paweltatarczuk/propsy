@@ -61,7 +61,6 @@
     Place.prototype.createTooltip = function() {
         var data = $.extend({}, this);
         var html = this._template(data);
-        console.log(html);
         this.$tooltip = $(html);
     };
 
