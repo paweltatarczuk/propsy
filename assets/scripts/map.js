@@ -19,11 +19,15 @@
 
         this.name = data.name;
         this.address = data.address;
-        this.contact = data.contact;
+        this.contact = data.phone;
         this.photos = data.photos;
+        this.site = data.site;
 
-        this._template = Handlebars.compile(this.template);
-        Handlebars.registerPartial('carousel', this.carouselTemplate);
+        this._template = Handlebars.compile(this.templates.place);
+        Handlebars.registerPartial('placeBodyWithPhotos', this.templates.placeBodyWithPhotos);
+        Handlebars.registerPartial('placeBodyWithoutPhotos', this.templates.placeBodyWithoutPhotos);
+        Handlebars.registerPartial('placePhotos', this.templates.placePhotos);
+        Handlebars.registerPartial('placeDetails', this.templates.placeDetails);
 
         this.createTooltip();
         this.createMarker();
@@ -78,35 +82,49 @@
         this.$tooltip.remove();
     };
 
-    Place.prototype.carouselTemplate = `
-        <div class="carousel slide">
-            <!-- Wrapper for slides -->
-            <div class="carousel-inner" role="listbox">
-                {{#each photos}}
-                    <div class="item">
-                        <img class="img-responsive img-circle" width="200"
-                            src="https://maps.googleapis.com/maps/api/place/photo?key={{googleApiKey}}&maxwidth=200&photoreference={{this}}" />
-                    </div>
-                {{/each}}
+    Place.prototype.templates = {
+        place: `
+            <div class="place-tooltip">
+                {{#if photos}}
+                    {{> placeBodyWithPhotos}}
+                {{else}}
+                    {{> placeBodyWithoutPhotos}}
+                {{/if}}
             </div>
-        </div>
-    `;
-
-    Place.prototype.template = `
-        <div class="place-tooltip">
+        `,
+        placeBodyWithPhotos: `
             <div class="row">
                 <div class="col-md-6">
-                    {{> carousel}}
+                    {{> placePhotos}}
                 </div>
                 <div class="col-md-6">
-                    <h4>{{name}}</h4>
-                    <p class="address">{{address}}</p>
-                    <p class="contact">{{contact}}</p>
-                    <p class="site">{{site}}</p>
+                    {{> placeDetails}}
                 </div>
             </div>
-        </div>
-    `;
+        `,
+        placeBodyWithoutPhotos: `
+            {{> placeDetails}}
+        `,
+        placeDetails: `
+            <h4>{{name}}</h4>
+            <p class="address">{{address}}</p>
+            <p class="contact">{{contact}}</p>
+            <p class="site">{{site}}</p>
+        `,
+        placePhotos: `
+            <div class="carousel slide">
+                <!-- Wrapper for slides -->
+                <div class="carousel-inner" role="listbox">
+                    {{#each photos}}
+                        <div class="item">
+                            <img class="img-responsive img-circle" width="200"
+                                src="https://maps.googleapis.com/maps/api/place/photo?key={{googleApiKey}}&maxwidth=200&photoreference={{this}}" />
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        `
+    };
 
     Place.places = [];
 
@@ -147,6 +165,11 @@
             scaleControl: true
         });
 
+        var self = this;
+        google.maps.event.addListenerOnce(this.googleMap, 'idle', function(){
+            self.setCenter(self.googleMap.getCenter(), false);
+        });
+
         this.findAll();
     };
 
@@ -174,20 +197,20 @@
             self.googleMap.fitBounds(result.geometry.bounds);
             self.setCenter(result.geometry.location);
 
-            return; // Do not perform places search
+            // Do not perform places search
 
-            $.ajax('/places/near', {
-                data: {
-                    lat: result.geometry.location.lat(),
-                    lng: result.geometry.location.lng()
-                },
-                success: function(data) {
-                    $.each(data, function(n, placeData) {
-                        var place = new Place(placeData);
-                        place.setMap(self);
-                    });
-                }
-            });
+            // $.ajax('/places/near', {
+            //     data: {
+            //         lat: result.geometry.location.lat(),
+            //         lng: result.geometry.location.lng()
+            //     },
+            //     success: function(data) {
+            //         $.each(data, function(n, placeData) {
+            //             var place = new Place(placeData);
+            //             place.setMap(self);
+            //         });
+            //     }
+            // });
         });
     };
 
@@ -198,10 +221,14 @@
 
         $.ajax('/places/list', {
             success: function(data) {
+                var markers = [];
                 $.each(data, function(n, placeData) {
                     var place = new Place(placeData);
                     place.setMap(self);
+                    markers.push(place.marker);
                 });
+
+                var mc = new MarkerClusterer(self.googleMap, markers);
             }
         });
     };
@@ -243,7 +270,7 @@
         return projection.fromPointToLatLng(point);
     };
 
-    Map.prototype.setCenter = function(location) {
+    Map.prototype.setCenter = function(location, pan) {
         var center = location;
 
         center = this.transformLatLng(
@@ -251,7 +278,7 @@
             { x: 0, y: -0.5 * ($('#page-header').offset().top +  $('#page-header').outerHeight()) }
         );
 
-        this.googleMap.panTo(center);
+        this.googleMap[pan === false ? 'setCenter' : 'panTo'](center);
     };
 
     Map.prototype.setZoom = function(zoom) {
