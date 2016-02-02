@@ -45,7 +45,7 @@
 
         this.marker = new google.maps.Marker({
             position: this.latlng, // data.location
-            icon: 'images/marker.png'
+            icon: 'images/marker-30.png'
         });
 
         this.marker.addListener('mouseover', function() {
@@ -228,7 +228,7 @@
                     markers.push(place.marker);
                 });
 
-                var mc = new MarkerClusterer(self.googleMap, markers);
+                var mc = new MarkerClusterer(self.googleMap, markers, self.clusterOptions);
             }
         });
     };
@@ -315,6 +315,38 @@
         '"color":"#84afa3"},{"lightness":52}]},{"featureType":"water","elementType":"geometry","' +
         'stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"geometry.fill","s' +
         'tylers":[{"visibility":"on"}]}]');
+
+    Map.prototype.clusterOptions = {
+        maxZoom: 12,
+        zoomOnClick: true,
+        averageCenter: true,
+        styles: [
+            {
+                url: '../images/marker-40.png',
+                height: 40,
+                width: 28,
+                textColor: 'transparent',
+                iconAnchor: [14, 37],
+                backgroundPosition: 'center bottom'
+            },
+            {
+                url: '../images/marker-50.png',
+                height: 50,
+                width: 35,
+                textColor: 'transparent',
+                iconAnchor: [17.5, 47],
+                backgroundPosition: 'center bottom'
+            },
+            {
+                url: '../images/marker-60.png',
+                height: 60,
+                width: 42,
+                textColor: 'transparent',
+                iconAnchor: [21, 57],
+                backgroundPosition: 'center bottom'
+            }
+        ]
+    }
 
     window.Map = Map;
 })(jQuery);
