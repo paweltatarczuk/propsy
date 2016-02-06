@@ -16,6 +16,11 @@ var mongoose = require('mongoose');
 var exphbs = require('express-handlebars');
 var hbs;
 
+// Enforce domain
+if (process.env.SITE_URL) {
+    app.use(require('express-force-domain')(process.env.SITE_URL));
+}
+
 // For application/x-www-form-urlencoded body
 app.use(bodyParser.urlencoded({ extended: false }));
 
