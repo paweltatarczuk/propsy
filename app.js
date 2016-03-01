@@ -72,7 +72,13 @@ app.use('/places', require('./routes/places'));
 /**
  * Mongoose
  */
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(process.env.MONGO_URL, {
+    server: {
+        socketOptions: {
+            keepAlive: 120
+        }
+    }
+});
 
 /*
  * Start it up
