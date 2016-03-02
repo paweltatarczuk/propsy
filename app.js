@@ -72,13 +72,15 @@ app.use('/places', require('./routes/places'));
 /**
  * Mongoose
  */
-mongoose.connect(process.env.MONGO_URL, {
-    server: {
-        socketOptions: {
-            keepAlive: 120
-        }
-    }
-});
+var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };
+
+mongoose.connect(process.env.MONGO_URL, options);
+
+/**
+ * Bind mongoose connection error
+ */
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
 
 /*
  * Start it up
