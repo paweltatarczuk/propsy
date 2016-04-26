@@ -95,7 +95,8 @@ module.exports = function (grunt) {
             dev: {
                 GOOGLE_API_SERVER_KEY: 'AIzaSyBlXhl-dRRMUCklW_14OdjddaDyrA7Bp3I',
                 GOOGLE_API_CLIENT_KEY: 'AIzaSyDsMYSxNOcd1dyoLZHAiTJRjC8V0Y-hSQ4',
-                MONGO_URL: 'mongodb://localhost/test'
+                MONGO_URL: 'mongodb://localhost/test',
+                SITE_URL: 'http://dev.local:3000'
             }
         },
 
