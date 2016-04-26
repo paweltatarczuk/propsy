@@ -113,13 +113,25 @@ router.put('/:id', function(req, res) {
             };
         }
 
-        place.save(function (err, place) {
-            if (err) {
-                return res.status(500).send(err);
-            }
+        var saveCallback = function() {
+            place.save(function (err, place) {
+                if (err) {
+                    return res.status(500).send(err);
+                }
 
-            res.json(place);
-        });
+                res.json(place);
+            });
+        };
+
+        if (req.body.forcePlaceUpdate) {
+            place.updatePlaceInfo(function(err) {
+                if (err) return res.status(500).send(err);
+
+                saveCallback();
+            });
+        } else {
+            saveCallback();
+        }
     });
 });
 
