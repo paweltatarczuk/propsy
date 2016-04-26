@@ -25,7 +25,8 @@
         "_": false,
         "jQuery": false,
         "Handlebars": false,
-        "googleApiKey": false
+        "googleApiKey": false,
+        "MarkerClusterer": false
     },
     "maxstatements": 30
 }

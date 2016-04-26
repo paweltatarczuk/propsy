@@ -228,7 +228,7 @@
                     markers.push(place.marker);
                 });
 
-                var mc = new MarkerClusterer(self.googleMap, markers, self.clusterOptions);
+                new MarkerClusterer(self.googleMap, markers, self.clusterOptions);
             }
         });
     };
@@ -346,7 +346,7 @@
                 backgroundPosition: 'center bottom'
             }
         ]
-    }
+    };
 
     window.Map = Map;
 })(jQuery);
