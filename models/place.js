@@ -24,10 +24,11 @@ placeSchema.pre('save', function(next) {
     if (typeof this.placeId !== 'string') {
         this.updatePlaceInfo(function(err) {
             if (err) return next(new Error(err));
+            else return next();
         });
+    } else {
+        next();
     }
-
-    next();
 });
 
 // Model

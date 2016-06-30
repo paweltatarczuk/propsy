@@ -76,9 +76,16 @@
         this.$tooltip.find('.carousel')
             .find('.item:first').addClass('active').end()
             .carousel();
+
+        // Handle mouseout
+        var self = this;
+        this.$tooltip.on('mouseout', function() {
+            self.hideTooltip();
+        });
     };
 
     Place.prototype.hideTooltip = function() {
+        if (this.$tooltip.is(':hover')) return;
         this.$tooltip.remove();
     };
 
@@ -275,7 +282,7 @@
 
         center = this.transformLatLng(
             center,
-            { x: 0, y: -0.5 * ($('#page-header').offset().top +  $('#page-header').outerHeight()) }
+            { x: -0.5 * ($('#page-nav').offset().left +  $('#page-nav').outerWidth()), y: 0 }
         );
 
         this.googleMap[pan === false ? 'setCenter' : 'panTo'](center);

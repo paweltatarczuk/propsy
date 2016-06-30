@@ -45,6 +45,7 @@ app.set('views', __dirname + '/views');
 
 // Locate the assets
 app.use(express.static(__dirname + '/assets'));
+app.use(express.static(__dirname + '/bower_components'));
 
 // Set Handlebars
 app.set('view engine', 'handlebars');

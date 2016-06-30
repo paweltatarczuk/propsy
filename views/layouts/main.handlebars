@@ -21,20 +21,29 @@
         <link rel="stylesheet" href="styles/screen.css">
         <!-- endbuild -->
         <script type="text/javascript">var googleApiKey = '{{googleApiKey}}';</script>
+        <script type="text/javascript">document.documentElement.className = document.documentElement.className.replace("no-js","js");</script>
     </head>
     <body>
         <!--[if lt IE 10]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <header id="page-header">
-            <div id="logo">
-                <!-- build:js(assets) images/logo.png -->
-                <img src="images/logo.png" alt="Propsy">
-                <!-- endbuild -->
+        <aside id="page-nav">           
+            <div class="search-box">
+                <div id="logo">
+                    <!-- build:js(assets) images/logo.png -->
+                    <img src="images/logo.png" alt="Propsy">
+                    <!-- endbuild -->
+                </div>
+
+                <div class="search-input">
+                    <input type="text" name="q" placeholder="Wrocław, Rynek" />
+                    <span class="clear">x</span>
+                </div>
+
+                <div class="search-results"></div>
             </div>
-            <input type="text" name="q" placeholder="Wrocław, Rynek" />
-        </header>
+        </aside>
 
         <div id="socials">
             <a class="facebook" href="https://www.facebook.com/ProPsy.Co/">Facebook</a>
@@ -46,12 +55,12 @@
         <script src="//maps.googleapis.com/maps/api/js?language=pl&libraries=places"></script>
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <!-- build:js(assets) bower_components/underscore/underscore-min.js -->
-        <script type="text/javascript" src="bower_components/underscore/underscore-min.js"></script>
-        <!-- build:js(assets) bower_components/handlebars/handlebars.min.js -->
-        <script type="text/javascript" src="bower_components/handlebars/handlebars.min.js"></script>
-        <!-- build:js(assets) bower_components/js-marker-clusterer/src/markerclusterer_compiled.js -->
-        <script type="text/javascript" src="bower_components/js-marker-clusterer/src/markerclusterer.js"></script>
+        <!-- build:js(assets) underscore/underscore-min.js -->
+        <script type="text/javascript" src="underscore/underscore-min.js"></script>
+        <!-- build:js(assets) handlebars/handlebars.min.js -->
+        <script type="text/javascript" src="handlebars/handlebars.min.js"></script>
+        <!-- build:js(assets) js-marker-clusterer/src/markerclusterer_compiled.js -->
+        <script type="text/javascript" src="js-marker-clusterer/src/markerclusterer.js"></script>
         <!-- build:js(assets) scripts/map.js -->
         <script type="text/javascript" src="scripts/map.js"></script>
         <!-- endbuild -->

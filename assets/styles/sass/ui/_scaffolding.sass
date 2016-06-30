@@ -3,10 +3,22 @@
 /*------------------------------------*/
 #map-container
     position: absolute
-    top: 0
+    top: 55px
     right: 0
     bottom: 0
     left: 0
+    border-top: solid 1px rgba(62, 62, 62, 0.4)
+
+    &:before
+        z-index: 200
+        position: absolute
+        top: 33px
+        right: 55px
+        display: block
+        width: 156px
+        height: 25px
+        background: transparent url(../images/propsy.png) no-repeat
+        content: ''
 
 #map
     width: 100%
@@ -15,22 +27,27 @@
 .place-tooltip
     z-index: 400
     position: absolute
-    width: 300px
-    min-height: 150px
-    margin: 20px 0 0 -150px
-    padding: 10px 15px
-    background: white
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
-    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3)
-    -webkit-border-radius: 5px
-    -moz-border-radius: 5px
-    border-radius: 5px
+    width: 230px
+    min-height: 60px
+    margin: 55px 0 0 -114px
+    padding: 36px 15px 10px
+    color: #5e5f5e
+    font-size: 12px
     text-align: center
+
+    &:after
+        z-index: -1
+        position: absolute
+        top: 26px
+        left: 0
+        right: 0
+        bottom: 0
+        background: #fff
+        content: ''
 
     &:before
         position: absolute
-        top: -8px
+        top: 18px
         left: 50%
         display: block
         margin: 0 0 0 -7px
@@ -42,9 +59,21 @@
     h3
         margin: 0
         padding: 0
+        font-size: 17px
+        font-weight: bold
 
     img
         margin: 5px auto
+
+    .contact, .site
+        display: none
+
+    .address
+        display: block
+        padding: 10px 0
+        margin-bottom: -26px
+        background: #37e4c0
+        color: #fff
 
 /**
  * GRID

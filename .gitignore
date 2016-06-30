@@ -1,4 +1,6 @@
 node_modules
 .tmp
 .sass-cache
-assets/bower_components
+bower_components
+/assets/styles/screen.css
+/assets/styles/screen.css.map

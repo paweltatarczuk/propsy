@@ -1,0 +1,22 @@
+FROM node:0
+
+RUN npm install -g grunt
+
+WORKDIR /app
+
+COPY package.json /app
+RUN ["npm", "install", "."]
+
+RUN npm install -g bower
+
+COPY bower.json /app
+RUN ["bower", "--allow-root", "install"]
+
+RUN apt-get update \
+	&& apt-get install -y ruby ruby-dev \
+	&& gem install sass
+
+COPY . /app
+
+RUN ["grunt", "build"]
+CMD ["node", "app.js"]

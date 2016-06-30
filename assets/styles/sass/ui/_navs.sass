@@ -1,0 +1,79 @@
+/*------------------------------------*/
+/*    $NAV PRIMARY
+/*------------------------------------*/
+
+#page-nav
+    z-index: 200
+    position: absolute
+    left: 0
+    top: 56px
+    bottom: 0
+    width: 350px
+    background: #3e3e3e
+    border-right: solid 1px rgba(62, 62, 62, 0.4)
+
+    #logo
+        position: absolute
+        top: 0
+        left: 50%
+        width: 63px
+        height: 92px
+        margin: -34px 0 0 -31px
+
+    .search-box
+        padding-top: 60px
+        background: #626364
+
+.search-box
+    position: relative
+    padding: 0 59px
+
+    .search-input
+        position: relative
+
+        &:before
+            position: absolute
+            top: 5px
+            left: -30px
+            display: block
+            width: 10px
+            height: 12px
+            background: transparent url(../images/location.png) no-repeat
+            content: ''
+
+        input[type="text"]
+            display: block
+            width: 100%
+            height: 28px
+            margin: 16px 0 13px
+            line-height: 28px
+            background: #626364
+            border: none
+            border-bottom: solid 1px #454545
+            box-shadow: 0 1px 0 #3e3e3e
+            color: #fff
+            font-size: 14px
+            text-align: right
+
+        .clear
+            position: absolute
+            top: 8px
+            right: -26px
+            display: block
+            width: 11px
+            height: 10px
+            background: transparent url(../images/x.png) no-repeat
+            text-indent: -999px
+            line-height: 10em
+            overflow: hidden
+            cursor: pointer
+
+            html.no-js &
+                display: none
+
+    .search-results
+        clear: both
+        margin: 0 -59px
+        padding: 20px 0
+        background: #3e3e3e
+        border-top: solid 2px #545556

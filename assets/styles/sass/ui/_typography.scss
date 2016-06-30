@@ -48,7 +48,23 @@ body {
 
 // @include font-face("Icons", "../fonts/Icons");
 
-@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700&subset=latin,latin-ext);
+@font-face {
+    font-family: 'Pluto';
+    src: url('../fonts/plutobold-webfont.woff2') format('woff2'),
+         url('../fonts/plutobold-webfont.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'Pluto';
+    src: url('../fonts/plutoregular-webfont.woff2') format('woff2'),
+         url('../fonts/plutoregular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 
 
