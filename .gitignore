@@ -4,3 +4,4 @@ node_modules
 bower_components
 /assets/styles/screen.css
 /assets/styles/screen.css.map
+.env
