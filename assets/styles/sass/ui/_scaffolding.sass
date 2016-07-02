@@ -69,11 +69,23 @@
         display: none
 
     .address
+        position: relative
         display: block
-        padding: 10px 0
+        padding: 10px 20px
         margin-bottom: -26px
         background: #37e4c0
         color: #fff
+
+        &:before
+            position: absolute
+            left: 10px
+            top: 50%
+            display: block
+            width: 11px
+            height: 11px
+            margin: -5px 0 0
+            background: transparent url(../images/web.png) no-repeat
+            content: ''
 
 /**
  * GRID
