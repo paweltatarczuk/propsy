@@ -14,4 +14,26 @@
         $(this).siblings('input[type="text"]').val('').trigger('change');
         e.preventDefault();
     });
+
+    // Page navigation toggling functionality
+    (function() {
+
+        // Handle the nav click
+        $('html').on('click', '#page-nav a.toggle', function(e) {
+            var $nav = $(this).closest('#page-nav');
+            $nav[$nav.hasClass('closed') ? 'removeClass' : 'addClass']('closed');
+
+            e.preventDefault();
+        });
+
+        // Close nav at initialization
+        $(document).ready(function() {
+
+            var timer = setTimeout(function() {
+                $('#page-nav').addClass('closed');
+            }, 1000);
+
+        });
+    })();
+
 })(jQuery);

@@ -10,7 +10,8 @@
     bottom: 0
     width: 350px
     background: #3e3e3e
-    border-right: solid 1px rgba(62, 62, 62, 0.4)
+    box-shadow: 2px 2px 0 rgba(62, 62, 62, 0.4)
+    transition: 0.5s left
 
     #logo
         position: absolute
@@ -23,6 +24,23 @@
     .search-box
         padding-top: 60px
         background: #626364
+
+    a.toggle
+        position: absolute
+        top: 50%
+        left: 100%
+        display: block
+        margin: -30px 0 0
+        width: 30px
+        height: 60px
+        background: #3e3e3e url(../images/toggle.png) center no-repeat
+        box-shadow: 2px 2px 0 rgba(46, 46, 46, 0.4)
+
+    &.closed
+        left: -350px
+
+        a.toggle
+            background-image: url(../images/toggle2.png)
 
 .search-box
     position: relative
