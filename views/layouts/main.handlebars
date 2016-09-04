@@ -28,7 +28,7 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <aside id="page-nav">           
+        <aside id="page-nav">
             <div class="search-box">
                 <div id="logo">
                     <!-- build:js(assets) images/logo.png -->
@@ -41,7 +41,7 @@
                     <span class="clear">x</span>
                 </div>
 
-                <div class="search-results"></div>
+                <ul class="search-results"></ul>
             </div>
 
             <a href="#" class="toggle"></a>
@@ -79,6 +79,14 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','{{googleAnalyticsKey}}');ga('send','pageview');
         </script>
+
+        <!-- Place suggestion entry -->
+        <script id="suggestion-template" type="text/x-handlebars-template">
+            <li class="suggestion">
+                <a href="#"><span class="street">\{{street}}</span> <span class="city">\{{city}}</span></a>
+            </div>
+        </script>
+
 
     </body>
 </html>

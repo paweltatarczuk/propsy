@@ -36,4 +36,61 @@
         });
     })();
 
+    // Search suggestions
+    (function() {
+
+        var showSuggestions = function(places) {
+            var addresses = {};
+
+            _.each(places, function(place) {
+                var matches = place.address.match(/(.*) [^,]*, \d+-\d+ ([^,]+), .*/);
+
+                if (matches) {
+                    var address = {
+                        street: matches[1],
+                        city: matches[2]
+                    };
+
+                    addresses[matches[1] + ' ' + matches[2]] = address;
+                }
+            });
+
+            var source   = $("#suggestion-template").html();
+            var template = Handlebars.compile(source);
+
+            $('#page-nav .search-results').html(_.map(addresses, template))
+        }
+
+        var handler = function() {
+            var keyword = $(this).val();
+
+            if (keyword.length < 3) {
+                showSuggestions([]);
+                return;
+            }
+
+            $.ajax({
+                url: 'places/suggest/' + keyword,
+                success: function(data) {
+                    showSuggestions(data);
+                }
+            });
+        };
+
+        // Handle request
+        $('html').on('keypress keyup', '#page-nav input[name="q"]', _.debounce(handler, 200));
+
+        // Handle suggestion selection
+        $('html').on('click', '#page-nav .search-results .suggestion a', function(e) {
+            $('#page-nav input[name="q"]')
+                .val(
+                    $(this).children('.street').text() + ', ' + $(this).children('.city').text()
+                )
+                .trigger('change');
+
+            e.preventDefault();
+        });
+
+    })();
+
 })(jQuery);

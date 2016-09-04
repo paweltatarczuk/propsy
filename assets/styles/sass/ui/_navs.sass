@@ -89,9 +89,43 @@
             html.no-js &
                 display: none
 
-    .search-results
+    ul.search-results
         clear: both
         margin: 0 -59px
         padding: 20px 0
         background: #3e3e3e
         border-top: solid 2px #545556
+        font-size: 1rem
+        text-align: right
+
+        > li
+            display: block
+
+            &:hover
+                background-color: #37e4c0
+
+                > a:after
+                    border-color: #37e4c0
+
+            > a
+                display: block
+                padding: 10px 62px 10px 76px
+
+                &:after
+                    position: relative
+                    top: 10px
+                    display: block
+                    content: ''
+                    border-bottom: solid 1px #2e2e2e
+                    border-top: solid 1px #393939
+            &:last-child > a:after
+                display: none
+
+            .city
+                color: white
+                text-transform: uppercase
+
+                &:before
+                    content: '\00B7'
+                    margin: 0 0.1rem
+                    color: #58585B

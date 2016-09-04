@@ -135,4 +135,21 @@ router.put('/:id', function(req, res) {
     });
 });
 
+router.get('/suggest/:keyword', function(req, res) {
+    if (req.params.keyword.length < 3) {
+        res.status(400).send('Invalid keyword length');
+        return;
+    }
+
+    Place.find({address: new RegExp(req.params.keyword, 'i')})
+        .limit(10)
+        .exec(function(err, places) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            res.json(places);
+        });
+});
+
 module.exports = router;
