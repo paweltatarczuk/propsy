@@ -5,8 +5,9 @@
  */
 var express = require('express');
 var compression = require('compression');
+var compressible = require('compressible');
 var bodyParser = require('body-parser');
-var app = express();
+var app = module.exports = express();
 var port = 3000;
 var mongoose = require('mongoose');
 
@@ -28,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // For gzip compression
-// app.use(compression);
+app.use(compression({ filter: function() { return true; }}));
 
 /*
  * Config for Production and Development
@@ -36,21 +37,18 @@ app.use(bodyParser.json());
 app.engine('handlebars', exphbs({
     // Default Layout and locate layouts and partials
     defaultLayout: 'main',
-    layoutsDir: 'views/layouts/',
-    partialsDir: 'views/partials/'
+    layoutsDir: 'app/views/layouts/',
+    partialsDir: 'app/views/partials/'
 }));
 
 // Locate the views
-app.set('views', __dirname + '/views');
+app.set('views', __dirname + '/app/views');
 
-// Locate the assets
-app.use(express.static(__dirname + '/assets'));
-app.use(express.static(__dirname + '/bower_components'));
+// Locate the public files
+app.use(express.static(__dirname + '/public'));
 
 // Set Handlebars
 app.set('view engine', 'handlebars');
-
-
 
 /*
  * Routes
@@ -68,7 +66,7 @@ router.get('/', function(request, response, next) {
 app.use(router);
 
 // Places
-app.use('/places', require('./routes/places'));
+app.use('/places', require('./app/routes/places'));
 
 /**
  * Mongoose
@@ -86,5 +84,7 @@ mongoose.connection.on('error', console.error.bind(console, 'connection error:')
 /*
  * Start it up
  */
-app.listen(process.env.PORT || port);
-console.log('Express started on port ' + port);
+if (!module.parent) {
+    app.listen(process.env.PORT || port);
+    console.log('Express started on port ' + port);
+}

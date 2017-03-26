@@ -1,7 +1,21 @@
+# Logs
+npm-debug.log*
+
+# Dependency directories
 node_modules
-.tmp
-.sass-cache
-bower_components
-/assets/styles/screen.css
-/assets/styles/screen.css.map
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Environment
 .env
+
+# Compiled assets
+public/**/*.css
+public/**/*.js
+
+# Coverage reports
+coverage

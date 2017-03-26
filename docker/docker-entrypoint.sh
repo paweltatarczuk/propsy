@@ -21,9 +21,8 @@ if [ $UID_EXISTS == "0" ]; then
   useradd -m -g $TARGET_GID -u $TARGET_UID tempuser
 fi
 
-if [ $1 == "grunt" ]; then
+if [ $1 == "npm" ]; then
   gosu $TARGET_UID npm install .
-  gosu $TARGET_UID bower install
   gosu $TARGET_UID "$@"
 else
   exec "$@"

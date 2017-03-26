@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var cache = require('memory-cache');
 
 var Place = require('../models/place');
 
@@ -15,13 +16,26 @@ router.delete('/:id', function(req, res) {
 });
 
 router.get('/list', function(req, res) {
-    Place.find({}, function(err, places) {
-        if (err) {
-            return res.status(500).send(err);
-        }
+    var places = cache.get('places.list');
 
-        res.json(places);
-    });
+    var next = function(places) {
+        res.set({'Content-Type': 'application/json; charset=utf-8'});
+        res.write(JSON.stringify(places));
+        res.end();
+    }
+
+    if (places === null) {
+        Place.find({}, function(err, places) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+
+            cache.put('places.list', places);
+            next(places);
+        });
+    } else {
+        next(places);
+    }
 });
 
 router.get('/near', function(req, res) {
@@ -56,16 +70,6 @@ router.get('/:id', function(req, res) {
     });
 });
 
-router.get('/', function(req, res) {
-    Place.find(function(err, places) {
-        if (err) {
-            return res.status(500).send(err);
-        }
-
-        res.json(places);
-    });
-});
-
 router.post('/', function(req, res) {
     var place = new Place();
     place.name = req.body.name;
@@ -88,6 +92,7 @@ router.post('/', function(req, res) {
             return res.status(500).send(err.message);
         }
 
+        cache.del('places.list');
         res.json(place);
     });
 });
@@ -119,6 +124,7 @@ router.put('/:id', function(req, res) {
                     return res.status(500).send(err);
                 }
 
+                cache.del('places.list');
                 res.json(place);
             });
         };

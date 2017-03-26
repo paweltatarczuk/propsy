@@ -1,3 +1,6 @@
+var Handlebars = require('handlebars');
+require('js-marker-clusterer');
+
 (function($) {
     'use strict';
 

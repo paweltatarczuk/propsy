@@ -1,6 +1,4 @@
-FROM node:0
-
-RUN npm install -g grunt bower
+FROM node:6
 
 RUN apt-get update \
   && apt-get install -y ruby ruby-dev \
@@ -23,4 +21,4 @@ WORKDIR /app
 COPY docker-entrypoint.sh /
 ENTRYPOINT ["/docker-entrypoint.sh"]
 
-CMD ["grunt", "workon"]
+CMD ["npm", "run", "start"]
