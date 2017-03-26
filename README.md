@@ -1,5 +1,7 @@
 # Propsy.dog
 
+[![Build Status](https://travis-ci.org/trawiasty/propsy.svg?branch=master)](https://travis-ci.org/trawiasty/propsy)
+
 Google Maps v3 based web aplication that provides pet friendly locations.
 
 ## Getting started
