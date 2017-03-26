@@ -14,4 +14,4 @@ You can run application with docker:
 You can also run it without docker:
 
 1. npm install
-2. GOOGLE_API_CLIENT_KEY=<client-key> GOOGLE_API_SERVER_KEY=<server-key> npm run supervisor
+2. GOOGLE_API_CLIENT_KEY=\<client-key\> GOOGLE_API_SERVER_KEY=\<server-key\> npm run supervisor
