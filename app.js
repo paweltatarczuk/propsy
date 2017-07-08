@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var app = module.exports = express();
 var port = 3000;
 var mongoose = require('mongoose');
+var Place = require('./app/models/place');
 
 /*
  * Use Handlebars for templating
@@ -85,6 +86,15 @@ mongoose.connection.on('error', console.error.bind(console, 'connection error:')
  * Start it up
  */
 if (!module.parent) {
-    app.listen(process.env.PORT || port);
-    console.log('Express started on port ' + port);
+    // Build cache
+    console.log('Building places cache');
+    Place.all(function(err) {
+        if (err) {
+            return console.error('Building places cache failed');
+        }
+        console.log('Places cache built');
+
+        app.listen(process.env.PORT || port);
+        console.log('Express started on port ' + port);
+    });
 }

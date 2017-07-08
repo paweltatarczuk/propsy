@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var _ = require('underscore');
+var cache = require('memory-cache');
 
 // Schema
 var placeSchema = new Schema({
@@ -20,6 +21,7 @@ placeSchema.index({ location: '2dsphere' });
 
 placeSchema.pre('save', function(next) {
     var self = this;
+    cache.del('places.list');
 
     if (typeof this.placeId !== 'string') {
         this.updatePlaceInfo(function(err) {
@@ -30,6 +32,26 @@ placeSchema.pre('save', function(next) {
         next();
     }
 });
+
+/**
+ * Get all places using cache
+ */
+placeSchema.statics.all = function(callback) {
+    var places = cache.get('places.list');
+
+    if (places === null) {
+        Place.find({}, function(err, places) {
+            if (err) {
+                return callback(err);
+            }
+
+            cache.put('places.list', places);
+            callback(null, places);
+        });
+    } else {
+        callback(null, places);
+    }
+}
 
 // Model
 var Place = mongoose.model('Place', placeSchema);
