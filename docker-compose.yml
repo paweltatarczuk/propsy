@@ -4,6 +4,8 @@ services:
   # MongoDB container
   db:
     image: mongo:3
+    ports:
+      - "27017:27017"
 
   # App container
   app:
@@ -12,7 +14,7 @@ services:
       - db
     environment:
       PORT: 3000
-      MONGO_URL: mongodb://db/db
+      MONGODB_URI: mongodb://db/db
     ports:
       - "${APP_PORT}3000"
     env_file: .env

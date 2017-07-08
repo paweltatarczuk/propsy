@@ -19,7 +19,7 @@ before_install:
 
 env:
     global:
-        - MONGO_URL="mongodb://127.0.0.1/travis"
+        - MONGODB_URI="mongodb://127.0.0.1/travis"
         - secure: "VU+eFjIE1A19pbvQshXFNnOv0CuEIodhst8XssWmrXtmTjPyDgXeac+fHLQEiEL5RsuVvAjJUMoTN+ZDMDCwpFRf9J6RT/iJ5dHDOqniE5nbJ9gYoUgaFbnwB1Dm7s4Ss/9jrumywd9VY8SlKm8mVchzkAlGgP9FlUbwi4BQgzE/PlbsUusy/A2DPCreyYfJEivijkcQq5ud6ziUcnzMK2VcxiK0bhUHcX28aiQZQ4HATeWJebl//DQmfC0YSlv6qKlTZ4+UB2PS6DE2wXqR+niEXdA+m6wW18b1gDjOX8buqN1ie1SJ90x9ZMYQA0/JmNh3EvrMhPKXXW5abk47chWtakNqZjitebob8N+JYIZ1HfBbinag312eSPPQAh7ATBLhLYpyEOpezSajqKpCpp0XhvhfyC2Ozuwux8qD91HDXmuO/dTDpqb3ttDzEEyhDD15kIoPjeLUaMDMM4MrQkHW3UoZvuzEBDjB3sLFNZ5cAi13CWnG8pzrdEYxlqwLdrLKb/Hu6AAN6pPWA4xowHm5yLL83Jc1xlXkl3FFna2cIp3Jtz7G34iMqnk9Wg1VOLnz72CI5F5Sj5kzI5U5Kzfaog7r3EyD5Gvr1Ji+DDDsCg903ST/8PnXsVuPR+jECPyunMamq1hJ0aLwhuxwQjMISwgyJuN5r3AmQZm6/1g="
 
 script: "npm run-script test-ci"
