@@ -3,7 +3,28 @@ var router = express.Router();
 
 var Place = require('../models/place');
 
-router.delete('/:id', function(req, res) {
+/**
+ * Middleware protecting API
+ * The most basic authentication case.
+ */
+var auth = function(req, res, next) {
+    var secret = process.env.API_SECRET || false;
+    var auth = req.get('authorization');
+
+    if (secret && auth) {
+        var credentials = new Buffer(
+            auth.split(' ').pop(), 'base64'
+        ).toString('ascii').split(':');
+
+        if (credentials[0] === 'token' && credentials[1] === secret) {
+            return next();
+        }
+    }
+
+    return res.status('403').send('Access denied');
+};
+
+router.delete('/:id', auth, function(req, res) {
     Place.findOne({ '_id': req.params.id }, function(err, place) {
         if (err) {
             return res.status(500).send(err);
@@ -62,7 +83,7 @@ router.get('/:id', function(req, res) {
     });
 });
 
-router.post('/', function(req, res) {
+router.post('/', auth, function(req, res) {
     var place = new Place();
     place.name = req.body.name;
     place.address = req.body.address
@@ -79,6 +100,7 @@ router.post('/', function(req, res) {
         };
     }
 
+
     place.save(function (err, place) {
         if (err) {
             return res.status(500).send(err.message);
@@ -88,7 +110,7 @@ router.post('/', function(req, res) {
     });
 });
 
-router.put('/:id', function(req, res) {
+router.put('/:id', auth, function(req, res) {
     Place.findOne({ '_id' : req.params.id }, function(err, place) {
         if (err) {
             return res.status(500).send(err);

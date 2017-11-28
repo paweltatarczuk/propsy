@@ -74,7 +74,7 @@ describe('routes', function() {
     });
 
     describe('POST /places', function() {
-        it('should respond with created place', function(done) {
+        it('should respond with access denied', function(done) {
             request(app)
                 .post('/places')
                 .send({
@@ -83,9 +83,43 @@ describe('routes', function() {
                 })
                 .set('Content-Type', 'application/json')
                 .end(function(err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    done();
+                });
+        });
+    });
+
+    describe('POST /places', function() {
+        it('should respond with created place', function(done) {
+            request(app)
+                .post('/places')
+                .send({
+                    name: "New place",
+                    address: "Święty Marcin 1, Poznań"
+                })
+                .set('Content-Type', 'application/json')
+                .set('Authorization', 'Basic dG9rZW46c2VjcmV0')
+                .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.name.should.eql("New place");
+                    done();
+                });
+        });
+    });
+
+    describe('PUT /places/:id', function() {
+        it('should respond with access denied', function(done) {
+            request(app)
+                .put('/places/58d6a09130787f018cc5548f')
+                .send({
+                    name: "New restaurant",
+                })
+                .set('Content-Type', 'application/json')
+                .end(function(err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
                     done();
                 });
         });
@@ -99,6 +133,7 @@ describe('routes', function() {
                     name: "New restaurant",
                 })
                 .set('Content-Type', 'application/json')
+                .set('Authorization', 'Basic dG9rZW46c2VjcmV0')
                 .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
