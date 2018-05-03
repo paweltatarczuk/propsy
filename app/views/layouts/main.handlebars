@@ -61,6 +61,7 @@
         <script type="text/javascript" src="scripts/app.js"></script>
         <!-- endbuild -->
 
+        {{#if googleAnalyticsKey}}
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
             (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -70,6 +71,7 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','{{googleAnalyticsKey}}');ga('send','pageview');
         </script>
+        {{/if}}
 
         <!-- Place suggestion entry -->
         <script id="suggestion-template" type="text/x-handlebars-template">

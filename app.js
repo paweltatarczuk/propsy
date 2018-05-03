@@ -60,7 +60,7 @@ var router = express.Router();
 router.get('/', function(request, response, next) {
     response.render('index', {
         googleApiKey: process.env.GOOGLE_API_CLIENT_KEY,
-        googleAnalyticsKey: process.env.GOOGLE_ANALYTICS_KEY || 'UA-XXXXX-X'
+        googleAnalyticsKey: process.env.GOOGLE_ANALYTICS_KEY || false
     });
 });
 
