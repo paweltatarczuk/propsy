@@ -23,6 +23,7 @@
     "istanbul": "0.4.5",
     "mocha": "3.2.0",
     "node-mongoose-fixtures": "^0.2.4",
+    "pretty-checkbox": "^3.0.3",
     "should": "^11.2.1",
     "should-http": "^0.1.0",
     "stream-transform": "^0.1.1",

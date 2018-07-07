@@ -15,7 +15,8 @@ var placeSchema = new Schema({
     coordinates: []
   },
   placeId: String,
-  openingHours: String
+  openingHours: String,
+  type: String
 });
 placeSchema.index({ location: '2dsphere' });
 

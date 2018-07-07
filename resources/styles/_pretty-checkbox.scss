@@ -1,0 +1,37 @@
+/**
+ * Pretty checkboxes
+ */
+
+@import './node_modules/pretty-checkbox/src/scss/variables.scss';
+@import './node_modules/pretty-checkbox/src/scss/core.scss';
+@import './node_modules/pretty-checkbox/src/scss/essentials/keyframes';
+@import './node_modules/pretty-checkbox/src/scss/essentials/functions';
+@import './node_modules/pretty-checkbox/src/scss/essentials/mixins';
+
+.pretty {
+    display: block;
+    margin-right: 0;
+    padding-right: 1.5em;
+
+    .state {
+        label {
+            display: block;
+            text-indent: 0;
+        }
+
+        .image, label:before, label:after {
+            left: auto;
+            right: 0;
+            border: none;
+            background: center center transparent no-repeat;
+        }
+    }
+
+    input ~ .state label:before {
+        background-image: url('../images/tick-off.png');
+    }
+
+    input:checked ~ .state label:before {
+        background-image: url('../images/tick-on.png');
+    }
+}

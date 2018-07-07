@@ -89,6 +89,19 @@
             html.no-js &
                 display: none
 
+    ul.search-filters
+        list-style: none
+        padding: 0
+        padding: 22px 0
+        color: white
+
+        li
+            margin: 16px 0
+
+        .icon
+            display: inline-block
+            width: 30px
+
     ul.search-results
         clear: both
         margin: 0 -59px
@@ -97,6 +110,10 @@
         border-top: solid 2px #545556
         font-size: 1rem
         text-align: right
+
+        &:empty
+            border: none
+            padding: 0
 
         > li
             display: block

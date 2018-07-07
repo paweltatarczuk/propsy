@@ -83,12 +83,12 @@ router.get('/:id', function(req, res) {
     });
 });
 
-router.post('/', auth, function(req, res) {
-    var place = new Place();
+var save = function(place, req, res) {
     place.name = req.body.name;
     place.address = req.body.address
     place.phone = req.body.phone;
     place.site = req.body.site;
+    place.type = req.body.type;
 
     if (req.body.location) {
         place.location = {
@@ -100,14 +100,19 @@ router.post('/', auth, function(req, res) {
         };
     }
 
-
-    place.save(function (err, place) {
+    var saveCallback = function(err, place) {
         if (err) {
-            return res.status(500).send(err.message);
+            return res.status(500).send(err);
         }
 
         res.json(place);
-    });
+    };
+
+    place.save(saveCallback);
+};
+
+router.post('/', auth, function(req, res) {
+    save(new Place(), req, res);
 });
 
 router.put('/:id', auth, function(req, res) {
@@ -116,40 +121,7 @@ router.put('/:id', auth, function(req, res) {
             return res.status(500).send(err);
         }
 
-        if (req.body.name) place.name = req.body.name;
-        if (req.body.address) place.address = req.body.address;
-        if (req.body.phone) place.phone = req.body.phone;
-        if (req.body.site) place.site = req.body.site;
-
-        if (req.body.location) {
-            place.location = {
-                type: "Point",
-                coordinates: [
-                    parseFloat(req.body.location.lng),
-                    parseFloat(req.body.location.lat)
-                ]
-            };
-        }
-
-        var saveCallback = function() {
-            place.save(function (err, place) {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-
-                res.json(place);
-            });
-        };
-
-        if (req.body.forcePlaceUpdate) {
-            place.updatePlaceInfo(function(err) {
-                if (err) return res.status(500).send(err);
-
-                saveCallback();
-            });
-        } else {
-            saveCallback();
-        }
+        save(place, req, res);
     });
 });
 

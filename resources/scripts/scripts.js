@@ -95,4 +95,25 @@ var _ = require('underscore');
 
     })();
 
+    // Search types filter
+    (function() {
+        // Handle filter change
+        $('html').on('change', '#page-nav input[name="filter"]', function(e) {
+            var filterTypes = false;
+            var $filterTypes = $('#page-nav input[name="filter"]');
+            if ($filterTypes.not(':checked').size() !== 0) {
+                filterTypes = $filterTypes.filter(':checked').map(function() {
+                    return this.value;
+                }).get();
+            }
+
+            map.setFilterTypes(filterTypes);
+        });
+
+        // Trigger initial filter
+        $(document).ready(function() {
+            $('#page-nav input[name="filter"]:first').trigger('change');
+        })
+    })();
+
 })(jQuery);

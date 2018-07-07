@@ -25,6 +25,7 @@ require('js-marker-clusterer');
         this.contact = data.phone;
         this.photos = data.photos;
         this.site = data.site;
+        this.type = data.type || 'other';
 
         this._template = Handlebars.compile(this.templates.place);
         Handlebars.registerPartial('placeBodyWithPhotos', this.templates.placeBodyWithPhotos);
@@ -50,6 +51,7 @@ require('js-marker-clusterer');
             position: this.latlng, // data.location
             icon: 'images/marker-30.png'
         });
+        this.marker.setVisible(false);
 
         this.marker.addListener('mouseover', function() {
             self.showTooltip();
@@ -136,6 +138,18 @@ require('js-marker-clusterer');
         `
     };
 
+    Place.prototype.isVisible = function() {
+        return this.marker.getVisible() == true;
+    };
+
+    Place.prototype.hide = function() {
+        this.marker.setVisible(false);
+    };
+
+    Place.prototype.show = function() {
+        this.marker.setVisible(true);
+    };
+
     Place.places = [];
 
     Place.purge = function() {
@@ -150,6 +164,12 @@ require('js-marker-clusterer');
     var Map = function(element) {
         this.element = element;
 
+        // Data with places
+        this.data = [];
+
+        // Marker clusterer
+        this.cluster = null;
+
         this.settings = $.extend({}, Map.defaults);
 
         this.init();
@@ -157,7 +177,8 @@ require('js-marker-clusterer');
 
     Map.defaults = {
         center: {lat: 51.8464397, lng: 19.6254585},
-        zoom: 6
+        zoom: 6,
+        filterTypes: false
     };
 
     Map.prototype.init = function() {
@@ -180,6 +201,8 @@ require('js-marker-clusterer');
             self.setCenter(self.googleMap.getCenter(), false);
         });
 
+        this.cluster = new MarkerClusterer(this.googleMap, [], this.clusterOptions);
+
         this.findAll();
     };
 
@@ -197,30 +220,22 @@ require('js-marker-clusterer');
         });
     };
 
+    Map.prototype.setFilterTypes = function(types) {
+        if (this.settings.filterTypes !== types) {
+            this.settings.filterTypes = types;
+            this.draw();
+        }
+    };
+
     Map.prototype.search = function(q) {
         var self = this;
 
         Place.purge();
 
-        // At first geocode location
+        // Geocode location
         this.geocode(q, function(result) {
             self.googleMap.fitBounds(result.geometry.bounds);
             self.setCenter(result.geometry.location);
-
-            // Do not perform places search
-
-            // $.ajax('/places/near', {
-            //     data: {
-            //         lat: result.geometry.location.lat(),
-            //         lng: result.geometry.location.lng()
-            //     },
-            //     success: function(data) {
-            //         $.each(data, function(n, placeData) {
-            //             var place = new Place(placeData);
-            //             place.setMap(self);
-            //         });
-            //     }
-            // });
         });
     };
 
@@ -238,10 +253,31 @@ require('js-marker-clusterer');
                     markers.push(place.marker);
                 });
 
-                new MarkerClusterer(self.googleMap, markers, self.clusterOptions);
+                self.draw();
             }
         });
     };
+
+    Map.prototype.draw = function() {
+        var self = this;
+
+        $.each(Place.places, function(n, place) {
+            if (self.settings.filterTypes !== false && !self.settings.filterTypes.includes(place.type)) {
+                if (place.isVisible()) {
+                    place.hide();
+                    self.cluster.removeMarker(place.marker, true);
+                }
+            } else {
+                if (!place.isVisible()) {
+                    place.show();
+                    self.cluster.addMarker(place.marker, true);
+                }
+            }
+        });
+
+        this.cluster.resetViewport();
+        this.cluster.redraw();
+    }
 
     /**
      * Convert GMap LatLng to container offset
