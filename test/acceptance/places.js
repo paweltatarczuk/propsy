@@ -63,7 +63,7 @@ describe('routes', function() {
     describe('GET /places/:id', function() {
         it('should respond with place with given id', function(done) {
             request(app)
-                .get('/places/58d6a09130787f018cc5548f')
+                .get('/places/1')
                 .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -112,7 +112,7 @@ describe('routes', function() {
     describe('PUT /places/:id', function() {
         it('should respond with access denied', function(done) {
             request(app)
-                .put('/places/58d6a09130787f018cc5548f')
+                .put('/places/1')
                 .send({
                     name: "New restaurant",
                 })
@@ -128,7 +128,7 @@ describe('routes', function() {
     describe('PUT /places/:id', function() {
         it('should respond with updated place', function(done) {
             request(app)
-                .put('/places/58d6a09130787f018cc5548f')
+                .put('/places/1')
                 .send({
                     name: "New restaurant",
                 })

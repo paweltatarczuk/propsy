@@ -21,7 +21,7 @@ require('js-marker-clusterer');
         });
 
         this.name = data.name;
-        this.address = data.address;
+        this.address = data.placeAddress;
         this.contact = data.phone;
         this.photos = data.photos;
         this.site = data.site;

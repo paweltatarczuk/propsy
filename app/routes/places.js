@@ -25,7 +25,7 @@ var auth = function(req, res, next) {
 };
 
 router.delete('/:id', auth, function(req, res) {
-    Place.findOne({ '_id': req.params.id }, function(err, place) {
+    Place.findOne({ 'numId': req.params.id }, function(err, place) {
         if (err) {
             return res.status(500).send(err);
         }
@@ -74,9 +74,13 @@ router.get('/near', function(req, res) {
 });
 
 router.get('/:id', function(req, res) {
-    Place.findOne({ '_id': req.params.id }, function(err, place) {
+    Place.findOne({ 'numId': req.params.id }, function(err, place) {
         if (err) {
             return res.status(500).send(err);
+        }
+
+        if (!place) {
+            return res.status(404).send('No place with given id');
         }
 
         res.json(place);
@@ -84,25 +88,33 @@ router.get('/:id', function(req, res) {
 });
 
 var save = function(place, req, res) {
-    place.name = req.body.name;
-    place.address = req.body.address
-    place.phone = req.body.phone;
-    place.site = req.body.site;
-    place.type = req.body.type;
+    var data = req.body;
 
-    if (req.body.location) {
+    // Update place id if adress changed
+    if ('address' in data && place.address != data.address) {
+        place.placeId = null;
+    }
+
+    place.numId = 'id' in data ? data.id : place.numId;
+    place.name = 'name' in data ? data.name : place.name;
+    place.address = 'address' in data ? data.address : place.address;
+    place.phone = 'phone' in data ? data.phone : place.phone;
+    place.site = 'site' in data ? data.site : place.site;
+    place.type = 'type' in data ? data.type : place.type;
+
+    if ('location' in data && data.location) {
         place.location = {
             type: "Point",
             coordinates: [
-                parseFloat(req.body.location.lng),
-                parseFloat(req.body.location.lat)
+                parseFloat(data.location.lng),
+                parseFloat(data.location.lat)
             ]
         };
     }
 
     var saveCallback = function(err, place) {
         if (err) {
-            return res.status(500).send(err);
+            return res.status(500).send(err.message);
         }
 
         res.json(place);
@@ -116,9 +128,13 @@ router.post('/', auth, function(req, res) {
 });
 
 router.put('/:id', auth, function(req, res) {
-    Place.findOne({ '_id' : req.params.id }, function(err, place) {
+    Place.findOne({ 'numId' : req.params.id }, function(err, place) {
         if (err) {
             return res.status(500).send(err);
+        }
+
+        if (!place) {
+            return res.status(404).send('No place with given id');
         }
 
         save(place, req, res);

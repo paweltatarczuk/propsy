@@ -5,6 +5,7 @@ var cache = require('memory-cache');
 
 // Schema
 var placeSchema = new Schema({
+  numId: { type: Number, unique: true, index: true },
   name: String,
   address: String,
   phone: String,
@@ -15,6 +16,7 @@ var placeSchema = new Schema({
     coordinates: []
   },
   placeId: String,
+  placeAddress: String,
   openingHours: String,
   type: String
 });
@@ -22,8 +24,16 @@ placeSchema.index({ location: '2dsphere' });
 
 placeSchema.pre('save', function(next) {
     var self = this;
+
+    // Validate id
+    if (this.numId < 0) {
+        return next(new Error('Numeric identifier must be greater than 0'));
+    }
+
+    // Purge cache
     cache.del('places.list');
 
+    // Update place info
     if (typeof this.placeId !== 'string') {
         this.updatePlaceInfo(function(err) {
             if (err) return next(new Error(err));
@@ -72,7 +82,7 @@ Place.prototype.updatePlaceInfo = function(callback) {
                 coordinates: [ parseFloat(result.lng), parseFloat(result.lat) ],
             };
 
-            self.address = result.address;
+            self.placeAddress = result.address;
 
             if (!self.name) {
                 self.name = result.name;

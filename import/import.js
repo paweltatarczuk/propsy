@@ -16,7 +16,7 @@ var request = require('request');
 var _ = require('underscore');
 
 var output = [];
-var columns = ['imported', 'name', 'address', 'postal', 'city', 'phone', 'url', 'latlng', 'type']
+var columns = ['id', 'name', 'address', 'postal', 'city', 'country', 'phone', 'url', 'latlng', 'type']
 var parser = parse({ delimiter: ',', columns: columns });
 var input = fs.createReadStream(file);
 
@@ -43,33 +43,66 @@ var transformer = transform(function(record, callback) {
         return callback(null);
     }
 
-    if (record['imported']) {
-        console.log('Already imported: ' + record['name']);
-        return callback(null);
-    }
-
     var data = {
+        id: record['id'] || null,
         name: record['name'] || null,
-        address: _.filter([record['address'], _.filter([record['postal'], record['city']]).join(' ')]).join(', ') || null,
+        address: _.filter([record['address'], _.filter([record['postal'], record['city']]).join(' '), record['country']]).join(', ') || null,
         phone: record['phone'] || null,
         site: record['url'] || null,
         location: record['latlng'] ? { lat: record['latlng'].split(',')[0], lng: record['latlng'].split(',')[1] } : null,
         type: parseType(record['type'] || null)
     };
 
-    request.post(url + '/places', {
-        form: data,
-        auth: { user: 'token', pass: token }
-    }, function(err, response, body) {
-        if (err || response.statusCode != 200) {
-            console.log('Error importing ' + data.name + ': ' + (err || response.statusCode));
-            // console.log(body);
-            // return callback(err || response.statusCode);
-            return callback(null);
+    // Try to find place with given id
+    request.get(url + '/places/' + record['id'], function(err, response, body) {
+        if (err) {
+            return callback(err);
         }
 
-        console.log('Imported: ' + data.name);
-        callback(null);
+        if (response.statusCode == 200) {
+            request.put(url + '/places/' + record['id'], {
+                form: data,
+                auth: { user: 'token', pass: token }
+            }, function(err, response, body) {
+                if (err) {
+                    console.log('Error updating ' + data.name + ': ' + err);
+                    return callback(null);
+                }
+
+                if (response.statusCode != 200) {
+                    console.log('Error updating ' + data.name + ': Unexpected error: ' + response.body);
+                    return callback(null);
+                }
+
+                console.log('Updated: ' + data.name);
+                callback(null);
+            });
+        }
+
+        else if (response.statusCode == 404) {
+            request.post(url + '/places', {
+                form: data,
+                auth: { user: 'token', pass: token }
+            }, function(err, response, body) {
+                if (err) {
+                    console.log('Error importing ' + data.name + ': ' + err);
+                    return callback(null);
+                }
+
+                if (response.statusCode != 200) {
+                    console.log('Error importing ' + data.name + ': Unexpected error: ' + response.body);
+                    return callback(null);
+                }
+
+                console.log('Imported new: ' + data.name);
+                callback(null);
+            });
+        }
+
+        else {
+            console.log('Error importing ' + data.name + ': Unexpected status code: ' + response.statusCode);
+            callback(null);
+        }
     });
 
 }, { parallel: 1 });
